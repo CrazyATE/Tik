@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tik Sports Content Creator - Demo</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            width: 90%;
+            max-width: 500px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .screen {
+            display: none;
+            padding: 40px;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .screen.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 10px;
+            font-size: 28px;
+        }
+
+        .subtitle {
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 16px;
+        }
+
+        .logo {
+            font-size: 48px;
+            margin-bottom: 20px;
+        }
+
+        .btn {
+            background: #FF0050;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 16px;
+            border-radius: 50px;
+            cursor: pointer;
+            width: 100%;
+            margin: 10px 0;
+            transition: all 0.3s ease;
+            font-weight: 600;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(255,0,80,0.3);
+        }
+
+        .btn-secondary {
+            background: #f0f0f0;
+            color: #333;
+        }
+
+        .btn-secondary:hover {
+            background: #e0e0e0;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .tiktok-auth {
+            text-align: center;
+            padding: 60px 40px;
+        }
+
+        .tiktok-logo {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 20px;
+            background: #000;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 40px;
+            font-weight: bold;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin: 30px 0;
+        }
+
+        .stat-card {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 12px;
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 24px;
+            font-weight: bold;
+            color: #667eea;
+        }
+
+        .stat-label {
+            font-size: 12px;
+            color: #666;
+            margin-top: 5px;
+        }
+
+        .content-preview {
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .content-title {
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: #333;
+        }
+
+        .content-text {
+            color: #666;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .hashtags {
+            color: #667eea;
+            font-size: 14px;
+            margin-top: 10px;
+        }
+
+        .progress-bar {
+            background: #f0f0f0;
+            height: 8px;
+            border-radius: 4px;
+            overflow: hidden;
+            margin: 20px 0;
+        }
+
+        .progress-fill {
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            height: 100%;
+            width: 0%;
+            animation: loading 2s ease forwards;
+        }
+
+        @keyframes loading {
+            to { width: 100%; }
+        }
+
+        .feature-list {
+            list-style: none;
+            margin: 20px 0;
+        }
+
+        .feature-list li {
+            padding: 10px 0;
+            color: #666;
+            display: flex;
+            align-items: center;
+        }
+
+        .feature-list li:before {
+            content: "✓";
+            color: #4CAF50;
+            font-weight: bold;
+            margin-right: 10px;
+            font-size: 18px;
+        }
+
+        .video-mock {
+            background: #000;
+            border-radius: 12px;
+            height: 200px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 48px;
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+    <!-- Screen 1: Landing Page -->
+    <div class="container">
+        <div class="screen active" id="landing">
+            <div class="logo">📊⚽</div>
+            <h1>Tik Sports Creator</h1>
+            <p class="subtitle">AI-Powered Sports Content for TikTok</p>
+
+            <ul class="feature-list">
+                <li>Generate trending sports content</li>
+                <li>Real-time statistics & analytics</li>
+                <li>Professional video templates</li>
+                <li>One-click TikTok posting</li>
+            </ul>
+
+            <button class="btn" onclick="showScreen('tiktok-auth')">
+                Connect with TikTok
+            </button>
+        </div>
+
+        <!-- Screen 2: TikTok Authorization -->
+        <div class="screen" id="tiktok-auth">
+            <div class="tiktok-auth">
+                <div class="tiktok-logo">T</div>
+                <h2>Authorize Tik Sports Creator</h2>
+                <p style="color: #666; margin: 20px 0;">
+                    Tik Sports Creator would like to:
+                </p>
+                <ul style="text-align: left; display: inline-block; color: #666;">
+                    <li>Access your profile information</li>
+                    <li>View your videos</li>
+                    <li>Post content to your account</li>
+                </ul>
+                <div style="margin-top: 30px;">
+                    <button class="btn" onclick="showScreen('dashboard')">Authorize</button>
+                    <button class="btn-secondary btn" onclick="showScreen('landing')">Cancel</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Screen 3: Dashboard -->
+        <div class="screen" id="dashboard">
+            <h1>Welcome, @DrCheddar</h1>
+            <p class="subtitle">Your Sports Content Dashboard</p>
+
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-value">2.3K</div>
+                    <div class="stat-label">Followers</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">45.6K</div>
+                    <div class="stat-label">Total Views</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">12</div>
+                    <div class="stat-label">Videos Posted</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">8.5%</div>
+                    <div class="stat-label">Engagement</div>
+                </div>
+            </div>
+
+            <button class="btn" onclick="showScreen('generate')">
+                Generate New Content
+            </button>
+            <button class="btn-secondary btn" onclick="showScreen('landing')">
+                Sign Out
+            </button>
+        </div>
+
+        <!-- Screen 4: Generate Content -->
+        <div class="screen" id="generate">
+            <h1>Generate Content</h1>
+            <p class="subtitle">AI is analyzing trending sports data...</p>
+
+            <div class="progress-bar">
+                <div class="progress-fill"></div>
+            </div>
+
+            <div style="color: #666; margin: 20px 0;">
+                <p>✓ Analyzing NBA trending topics</p>
+                <p>✓ Identifying viral opportunities</p>
+                <p>✓ Generating engaging script</p>
+                <p>✓ Creating video template</p>
+            </div>
+
+            <button class="btn" onclick="showScreen('preview')">
+                Continue
+            </button>
+        </div>
+
+        <!-- Screen 5: Content Preview -->
+        <div class="screen" id="preview">
+            <h1>Content Ready!</h1>
+            <p class="subtitle">Review and customize before posting</p>
+
+            <div class="video-mock">▶️</div>
+
+            <div class="content-preview">
+                <div class="content-title">LeBron's Historic 40,000 Points</div>
+                <div class="content-text">
+                    Breaking: LeBron James becomes the first NBA player to reach 40,000 career points!
+                    Here's how his achievement compares to other legends...
+                </div>
+                <div class="hashtags">
+                    #NBA #LeBron40K #History #Basketball #GOAT
+                </div>
+            </div>
+
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-value">92%</div>
+                    <div class="stat-label">Viral Potential</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">Peak</div>
+                    <div class="stat-label">Trend Status</div>
+                </div>
+            </div>
+
+            <button class="btn" onclick="showScreen('success')">
+                Post to TikTok
+            </button>
+            <button class="btn-secondary btn" onclick="showScreen('dashboard')">
+                Back to Dashboard
+            </button>
+        </div>
+
+        <!-- Screen 6: Success -->
+        <div class="screen" id="success">
+            <div style="text-align: center;">
+                <div class="logo">✅</div>
+                <h1>Posted Successfully!</h1>
+                <p class="subtitle">Your content is now live on TikTok</p>
+
+                <div style="margin: 30px 0; color: #666;">
+                    <p>Video posted as draft</p>
+                    <p>Ready for your final review on TikTok</p>
+                </div>
+
+                <button class="btn" onclick="showScreen('dashboard')">
+                    Back to Dashboard
+                </button>
+                <button class="btn-secondary btn" onclick="showScreen('generate')">
+                    Create Another
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function showScreen(screenId) {
+            // Hide all screens
+            document.querySelectorAll('.screen').forEach(screen => {
+                screen.classList.remove('active');
+            });
+
+            // Show the selected screen
+            setTimeout(() => {
+                document.getElementById(screenId).classList.add('active');
+            }, 100);
+        }
+    </script>
+</body>
+</html>
